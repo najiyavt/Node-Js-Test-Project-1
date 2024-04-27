@@ -4,58 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SOCIAL MEDIA APP</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        form {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px; /* Adjust width as needed */
-        }
-        label {
-            font-weight: bold;
-        }
-        input[type="text"] {
-            width: 100%;
-            padding: 8px;
-            margin: 5px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        button[type="submit"] {
-            background-color: #007bff;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-        }
-        button[type="submit"]:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <link rel="stylesheet" href="styel.css">
 </head>
 <body>
+  <header>
     <h2>Create A Post</h2>
+  </header>
     <form onsubmit="handFormSubmit(event)">
-        <label for="imageUrl">Post Link:</label><br>
-        <input type="text" id="imageUrl" name="imageUrl"><br>
-        <label for="desc">Post Description:</label><br>
-        <input type="text" id="desc" name="desc"><br>
-        <button type="submit">Create Post</button>
+    <label for="imageUrl">Post Link: </label>
+    <br>
+    <input type="text" id="imageUrl" name="imageUrl">
+    <br><br>
+    <label for="desc">Post Description: </label>
+    <br>
+    <input type="text" id="desc" name="desc">
+    <br><br>
+    <button type="submit">Create Post</button>
     </form>
     <h2>Posts</h2>
+    <div class="div">
+    </div>
+
 </body>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="index.js"></script>
