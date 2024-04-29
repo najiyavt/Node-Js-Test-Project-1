@@ -1,16 +1,20 @@
-const { deleteCookie } = require("undici-types");
 
 function handFormSubmit(event){
     event.preventDefault();
 
     const postDetails = {
-        imageUrl : event.target.imageUrl.value,
-        desc : event.target.desc.value
+       imageUrl : event.target.imageUrl.value,
+       description : event.target.description.value,
     }
-
-    axios.post (`http://localhost:3000/post`,postDetails)
+    console.log(postDetails)
+    axios.post (`http://localhost:3000/post`, postDetails)
     .then(res => {
-        display(res.data);
+        if(res.status === 201){
+           display(res.data);
+           event.target.reset()
+        }else{
+            console.log("Failed")
+        }
     })
     .catch(err => console.log(err))
 }
@@ -19,37 +23,40 @@ document.addEventListener('DOMContentLoaded',async()=> {
 
     axios.get(`http://localhost:3000/post`)
     .then(res => {
-        display(res.data)
+        console.log(res.data)
+        const postBox = document.querySelector('.post-box');//change to querySelector
+        postBox.innerHTML=''
+        res.data.forEach(post => {
+           display(post)
+        })
     })
     .catch(err => console.log(err))
 })
 
 function display(data){
 
-    const posts = document.querySelector('.div')
+    const postBox = document.querySelector('.post-box');
 
-    const div = document.createElement('div');
-
+    const div1 = document.createElement('div');
     const image = document.createElement('img');
-    image.src=data.imageUrl;
-    image.alt='Posted Image';
+    image.src = data.imageUrl;
+    image.classList='image';
+
+    div1.appendChild(image);
 
     const desc=document.createElement('p');
-    desc.textContent=data.desc; 
+    desc.textContent=data.description;
+    div1.appendChild(desc);
 
-    const cmtBtn = document.createElement('button');
-    cmtBtn.textContent='Comment';
+    postBox.appendChild(div1);
 
-    div.appendChild(image);
-    div.appendChild(desc);
-    posts.appendChild(div);
+    const div2=  document.createElement('div');
 
     const form=document.createElement('form');
-    form.classList='form'
+    form.classList='form';
 
     const input = document.createElement('input');
     input.type='text';
-    input.classList='cmt'
     input.placeholder='Write a Comment...';
 
     const sendBtn = document.createElement('button');
@@ -57,22 +64,34 @@ function display(data){
 
     form.appendChild(input);
     form.appendChild(sendBtn);
-    posts.appendChild(form);
 
-    sendBtn.addEventListener('click',(event) => {
+    form.addEventListener('submit',(event) => {
         event.preventDefault();
-        const comment = event.target.cmt.value;
-        axios.post(`http://localhost:3000/comments`,comment)
+        const comment = input.value.trim();
+        if(comment !==''){
+            axios.post(`http://localhost:3000/comments`,{ postId: data.id, text:comment })
         .then(res => {
-            displayComment(res);
+            if(res.status===201){
+               const newComment = res.data;
+               const newDiv = document.createElement('div');
+               newDiv.textContent=newComment.text;
+               div2.appendChild(newDiv);
+               form.reset()
+            }else{
+                console.error("Failed")
+            }
         })
-        .catch(err => console.log(err)) 
+        .catch(err => console.log(err)) ;
+        }
     })
-}
-function displayComment(data){
-    const cDiv=document.createElement('div');
-    const c=document.createElement('p');
-    c.innerHTML=`data.text`;
-    cDiv.appendChild(c);
-    form.reset();
+    div2.appendChild(form);
+
+    if(data.Comment && Array.isArray(data.Comment) && data.Comment.length>0){
+        data.Comment.forEach(comment => {
+            const newDiv = document.createElement('div');
+            newDiv.textContent=comment.text;
+            div2.appendChild(newDiv)
+        })
+    }
+    postBox.appendChild(div2);
 }

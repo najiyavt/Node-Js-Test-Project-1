@@ -1,9 +1,15 @@
 const sequelize = require("../util/database");
-const  DataTypes  = require("sequelize");
+const  Sequelize  = require("sequelize");
 
 const Comment = sequelize.define('comment',{
+    id:{
+        type:Sequelize.INTEGER,
+        allowNull:false,
+        primaryKey:true,
+        autoIncrement:true
+    },
     text:{
-        type:DataTypes.TEXT,
+        type:Sequelize.TEXT,
         allowNull:false
     }
 });

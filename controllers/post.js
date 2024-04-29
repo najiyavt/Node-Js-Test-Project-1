@@ -13,9 +13,10 @@ exports.getAddPost = (req,res,next) => {
 }
 
 exports.postAddPost = (req,res,next) => {
-    const {imageUrl,desc} = req.body;
+    const {imageUrl,description} = req.body;
     Post.create({
-        imageUrl,desc
+        imageUrl,
+        description
     })
     .then(result => {
         res.status(201).json(result)
@@ -26,13 +27,9 @@ exports.postAddPost = (req,res,next) => {
     })
 }
 
-// exports.getAddComment = (req,res,next) => {
-    
-// }
-
 exports.postAddComment = (req,res,next) => {
-    const {id,text} = req.body
-    Post.create({id:id,text})
+    const {postId,text} = req.body
+    Comment.create({ postId, text })
     .then(result => {
         res.status(201).json(result);
     })
